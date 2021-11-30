@@ -14,27 +14,23 @@ namespace ImageDetection
     {
         private AmazonRekognitionClient client = new AmazonRekognitionClient();
 
-        public async Task<Boolean> IsImageSafe(MemoryStream input)
+        public async Task<Boolean> IsImageSafe(string imageId, string bucketId)
         {
             var response = await client.DetectModerationLabelsAsync(new DetectModerationLabelsRequest()
             {
-                //Image = new Amazon.Rekognition.Model.Image()
-                //{
-                //    S3Object = new S3Object()
-                //    {
-                //        Bucket = bucketId,
-                //        Name = imageId
-                //    }
-                //}
-
                 Image = new Amazon.Rekognition.Model.Image()
                 {
-                    Bytes = input
-                },
+                    S3Object = new S3Object()
+                    {
+                        Bucket = bucketId,
+                        Name = imageId
+                    }
+                }
 
             });
 
             return response.ModerationLabels.Count == 0;
+
         }
 
         public async Task<MemoryStream> RedactFaces(MemoryStream input)
@@ -79,22 +75,17 @@ namespace ImageDetection
             }
         }
 
-        public async Task<Boolean> ListLabels(MemoryStream input)
+        public async Task<Boolean> ListLabels(string imageId, string bukcetId)
         {
             var response = await client.DetectLabelsAsync(new DetectLabelsRequest()
             {
-                //Image = new Amazon.Rekognition.Model.Image()
-                //{
-                //    S3Object = new S3Object()
-                //    {
-                //        Bucket = bukcetId,
-                //        Name = imageId
-                //    }
-                //},
-
                 Image = new Amazon.Rekognition.Model.Image()
                 {
-                    Bytes = input
+                    S3Object = new S3Object()
+                    {
+                        Bucket = bukcetId,
+                        Name = imageId
+                    }
                 },
             });
 

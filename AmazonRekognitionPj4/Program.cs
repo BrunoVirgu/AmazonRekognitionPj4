@@ -14,17 +14,31 @@ namespace AmazonRekognitionPj4
         static async Task Main(string[] args)
         {
             var img = new ImageDetection.ImageDetection();
+            var directory = @"..\\..\\..\\Imagens";
 
-            var memoryStream = ImageDetection.ImageHelper.LoadImageToMemoryStream(@"C:\temp\familiacomendo.jpg");
-
+            var memoryStream = ImageDetection.ImageHelper.LoadImageToMemoryStream($"{directory}//familiacomendo.jpg");
             var redactFaces = await img.RedactFaces(memoryStream);
 
-            var list = await img.ListLabels("pj4-bsi-rekognition", "teste.jpg");
-            var isSafe = await img.IsImageSafe("pj4-bsi-rekognition", "arma-de-fogo.jpg");
-            var isSafe2 = await img.IsImageSafe("pj4-bsi-rekognition", "faca-na-mao.jpg");
-            var isSafe3 = await img.IsImageSafe("pj4-bsi-rekognition", "familiacomendo.jpg");
 
-            
+            var memoryStream1 = ImageDetection.ImageHelper.LoadImageToMemoryStream($"{directory}//arma-de-fogo.jpg");
+            var list = await img.ListLabels(memoryStream1);
+            var isSafe = await img.IsImageSafe(memoryStream1);
+            Console.WriteLine($"É Seguro: {isSafe}");
+            Console.WriteLine("---------------------------------");
+
+            var memoryStream2 = ImageDetection.ImageHelper.LoadImageToMemoryStream($"{directory}//familiacomendo.jpg");
+            list = await img.ListLabels(memoryStream2);
+            var isSafe2 = await img.IsImageSafe(memoryStream2);
+            Console.WriteLine($"É Seguro: {isSafe2}");
+            Console.WriteLine("---------------------------------");
+
+            var memoryStrea3m = ImageDetection.ImageHelper.LoadImageToMemoryStream($"{directory}//faca-na-mão.jpg");
+            list = await img.ListLabels(memoryStrea3m);
+            var isSafe3 = await img.IsImageSafe(memoryStrea3m);
+            Console.WriteLine($"É Seguro: {isSafe3}");
+            Console.WriteLine("---------------------------------");
+
+
 
         }
 
